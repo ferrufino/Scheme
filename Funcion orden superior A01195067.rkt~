@@ -1,0 +1,53 @@
+
+;Andres G. Cavazos A01195067
+;Gustavo Ferrufino
+
+;1.Programar la función recursiva nprocs en Scheme que cuente el 
+;número de procedimientos NO primitivos dentro de una lista posiblemente imbricada.
+;Probar con:
+
+(define (cuadrado x) (* x x))
+(define inc1 (lambda (x) (+ x 1)))
+
+(define nprocs
+  (lambda (fun)
+    (if (list? fun)
+        (if(procedure? (car fun))
+           (+ 1 (nprocs (cdr fun)))
+           (nprocs (cdr fun)))
+        0)
+   )
+ )
+
+;2.Programar la función recursiva nveces en Scheme que aplique N veces 
+;un procedimiento a un valor.
+
+(define nveces 
+  (lambda (num fun x) 
+    (if (= num 1)
+        (fun x)
+        (fun (nveces (- num 1) fun x))
+     )
+   )
+ )
+
+;3.Programar la función recursiva mapea en Scheme que aplique una función 
+;que reciba como argumento a cada uno de los elementos de una lista.
+
+
+;4.Programar la función recursiva aplica-n en Scheme que sirva para 
+;generar procedimientos que apliquen N veces sobre un valor, la función dada
+;como parámetro de entrada.
+
+(define aplica-n 
+  (lambda (fun num)
+    (if (= num 0)
+        (lambda (x) x)
+        (lambda (x) (fun ((aplica-n fun (- num 1)) x)))
+     )
+   )
+ )
+
+(define inc7 (aplica-n (lambda (x) (+ x 1)) 7))
+(define eleva8a (aplica-n (lambda (x) (* x x)) 3))
+(define quita4 (aplica-n cdr 4))
